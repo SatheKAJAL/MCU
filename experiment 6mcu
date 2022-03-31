@@ -1,0 +1,29 @@
+;expt6 - interrupt
+;case 1 : timer interrupt
+
+	org	000h
+	ljmp	main
+
+	org	000Bh ;TIMER 0 ISR
+	CPL P2.5
+	MOV TH0, #0F0H ; DELAY 4 MS
+	MOV TL0, #060H
+	RETI
+
+	ORG 0040H
+	
+main:
+	mov tmod,#01h ;timer 0,mode 1
+	mov th0,#0F0H ;DELAY 4 MS
+	MOV TL0,#060H ; 
+	SETB TR0
+	MOV IE, #82H
+
+LOOP:	MOV A, #5H
+	DEC A
+	MOV B, #7H
+	ADD A,B
+	MOV B,A
+	SJMP LOOP
+
+	end
