@@ -1,0 +1,28 @@
+;experiment 6- interrupts
+;kajal sathe roll no. E-07
+
+	ORG	0000H
+	LJMP	MAIN
+
+
+	ORG	001BH		;INTEUPTS SERVICE ROUTINE TF1
+	MOV	TH1, #0FCH	;DELAY OF 4 MS
+	MOV	TL1, #018H
+	CPL	P2.5
+	RETI
+
+
+	ORG	0040H
+MAIN:
+	MOV	TMOD, #10H	;timer1 mode 1
+	MOV	TH1, #0FCH	;DELAY OF 4 MS
+	MOV	TL1, #018H
+	SETB	TR1		;START TIMER 1
+	MOV	IE, #88H	;Enabling Tf1 interrupt
+
+LABELX:				;INFINITE LOOP
+	MOV	A, #55H
+	DEC	A
+	MOV	B, A
+	DEC	B
+	SJMP	LABELX
